@@ -3,6 +3,7 @@ package com.bc.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bc.common.SystemCode;
+import com.bc.common.enums.ActionEnum;
 import com.bc.dto.InfoDto;
 import com.bc.dto.MenuDto;
 import com.bc.response.ResponseWithData;
@@ -30,8 +31,14 @@ public class CommonController  {
         logger.info("post in"+action);
         logger.info("post in"+param);
 
-        if("GetInfo".equals(action))
-            return getInfo();
+        ActionEnum actionEnum=null;
+        try{
+            actionEnum=ActionEnum.valueOf(action);
+        }catch (Exception e){
+
+        }
+        if(null!=actionEnum)
+            return action(actionEnum,param);
 
         JSONObject jsonObject=null;
         try {
@@ -51,6 +58,16 @@ public class CommonController  {
         }
     }
 
+
+    private ResponseWithData action(ActionEnum actionEnum,String param){
+        switch (actionEnum){
+            case GET_LOGIN_AUTHINFO:
+                return getInfo();
+            default:
+                return new ResponseWithData(SystemCode.CUSTOM_ERROR.getCode(),"暂不支持");
+        }
+    }
+
     public ResponseWithData getInfo(){
         logger.info("getInfo in");
         InfoDto info=new InfoDto();
@@ -59,18 +76,9 @@ public class CommonController  {
         info.setPrivileges(new ArrayList<>());
         info.setRealName("test name");
         List<String> routerList=new ArrayList<>();
-        routerList.add("pcManage");
-        routerList.add("requisition");
-        routerList.add("purchase");
-        routerList.add("pcReceipt");
-        routerList.add("pcShouldPay");
-        routerList.add("pcPayment");
-        routerList.add("pcSettle");
         routerList.add("plugins");
         routerList.add("demolist");
-        routerList.add("privilegeDemo");
-        routerList.add("requisitionAdd");
-        routerList.add("test");
+        routerList.add("lucenemgr");
         info.setRouterNames(routerList);
         info.setMenuList(MenuDto.menus());
 

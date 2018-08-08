@@ -22,7 +22,7 @@ public class MenuDto {
         MenuDto plugins=new MenuDto();
 
         plugins.setPid(null);
-        plugins.setId(8);
+        plugins.setId(100);
         plugins.setPath("/plugins");
         plugins.setRedirect(null);
         plugins.setName("plugins");
@@ -38,7 +38,7 @@ public class MenuDto {
 
         List<MenuDto> pluginsChilds=new ArrayList<>();
         MenuDto demolist=new MenuDto();
-        demolist.setId(9);
+        demolist.setId(101);
         demolist.setPath("/demolist");
         demolist.setName("demolist");
         demolist.setHidden(false);
@@ -46,7 +46,7 @@ public class MenuDto {
         demolistMeta.setTitle("Demo");
         demolistMeta.setIcon("table");
         demolistMeta.setPrivilege(null);
-        demolistMeta.setPid(8);
+        demolistMeta.setPid(100);
         demolistMeta.setSort(60);
         demolist.setMeta(demolistMeta);
         demolist.setChildren(new ArrayList<>());
@@ -57,7 +57,53 @@ public class MenuDto {
         plugins.setSort(65);
         menuDtoList.add(plugins);
 
+        //
+        menuDtoList.add(tool());
+
         return menuDtoList;
+    }
+
+    /**
+     * 200+  工具
+     */
+    private static MenuDto tool (){
+        MenuDto menuDto=new MenuDto();
+
+        menuDto.setPid(null);
+        menuDto.setId(200);
+        menuDto.setPath("/tool");
+        menuDto.setRedirect(null);
+        menuDto.setName("tool");
+        menuDto.setHidden(false);
+
+        MenuMetaDto metaDto=new MenuMetaDto();
+        metaDto.setTitle("后端工具");
+        metaDto.setIcon("table");
+        metaDto.setPrivilege(null);
+        metaDto.setPid(-1);
+        metaDto.setSort(65);
+        menuDto.setMeta(metaDto);
+
+        List<MenuDto> childs=new ArrayList<>();
+        MenuDto childMenu001=new MenuDto();
+        childMenu001.setId(9);
+        childMenu001.setPath("/luceneMgr");
+        childMenu001.setName("luceneMgr");
+        childMenu001.setHidden(false);
+        MenuMetaDto childMeta001=new MenuMetaDto();
+        childMeta001.setTitle("Lucene更新");
+        childMeta001.setIcon("table");
+        childMeta001.setPrivilege(null);
+        childMeta001.setPid(200);
+        childMeta001.setSort(60);
+        childMenu001.setMeta(childMeta001);
+        childMenu001.setChildren(new ArrayList<>());
+        childMenu001.setSort(60);
+        childs.add(childMenu001);
+
+        menuDto.setChildren(childs);
+        menuDto.setSort(65);
+        return  menuDto;
     }
 
 
