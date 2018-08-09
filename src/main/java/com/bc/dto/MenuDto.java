@@ -1,9 +1,11 @@
 package com.bc.dto;
 
+import com.bc.common.enums.RouterEnum;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuDto {
+public class MenuDto implements Cloneable {
 
     private String pid;
     private Integer id;
@@ -13,98 +15,62 @@ public class MenuDto {
     private boolean hidden;
     private MenuMetaDto meta;
     private List<MenuDto> children;
-    private Integer sort;
+    private Integer sort=50;
 
     public static List<MenuDto> menus(){
         List<MenuDto> menuDtoList = new ArrayList<>();
 
-        //plugins
-        MenuDto plugins=new MenuDto();
 
-        plugins.setPid(null);
-        plugins.setId(100);
-        plugins.setPath("/plugins");
-        plugins.setRedirect(null);
-        plugins.setName("plugins");
-        plugins.setHidden(false);
+        for(RouterEnum routerEnum:RouterEnum.values()){
+            if(routerEnum.getPid()!=-1){
+               continue;
+            }
 
-        MenuMetaDto pluginsMetaDto=new MenuMetaDto();
-        pluginsMetaDto.setTitle("插件Demo");
-        pluginsMetaDto.setIcon("table");
-        pluginsMetaDto.setPrivilege(null);
-        pluginsMetaDto.setPid(-1);
-        pluginsMetaDto.setSort(65);
-        plugins.setMeta(pluginsMetaDto);
+            MenuDto  menuDto = new MenuDto();
+            menuDto.setId(routerEnum.getId());
+            menuDto.setPath("/"+routerEnum.getPath());
+            menuDto.setName(routerEnum.getPath());
+            menuDto.setHidden(routerEnum.isHidden());
 
-        List<MenuDto> pluginsChilds=new ArrayList<>();
-        MenuDto demolist=new MenuDto();
-        demolist.setId(101);
-        demolist.setPath("/demolist");
-        demolist.setName("demolist");
-        demolist.setHidden(false);
-        MenuMetaDto demolistMeta=new MenuMetaDto();
-        demolistMeta.setTitle("Demo");
-        demolistMeta.setIcon("table");
-        demolistMeta.setPrivilege(null);
-        demolistMeta.setPid(100);
-        demolistMeta.setSort(60);
-        demolist.setMeta(demolistMeta);
-        demolist.setChildren(new ArrayList<>());
-        demolist.setSort(60);
-        pluginsChilds.add(demolist);
+            MenuMetaDto menuMetaDto=new MenuMetaDto();
+            menuMetaDto.setTitle(routerEnum.getTitle());
+            menuMetaDto.setIcon(routerEnum.getIcon());
+            menuMetaDto.setPid(routerEnum.getPid());
+            menuDto.setMeta(menuMetaDto);
 
-        plugins.setChildren(pluginsChilds);
-        plugins.setSort(65);
-        menuDtoList.add(plugins);
+            menuDto.setChildren(findChilds(routerEnum.getId()));
+            menuDtoList.add(menuDto);
+        }
 
-        //
-        menuDtoList.add(tool());
 
         return menuDtoList;
     }
 
-    /**
-     * 200+  工具
-     */
-    private static MenuDto tool (){
-        MenuDto menuDto=new MenuDto();
 
-        menuDto.setPid(null);
-        menuDto.setId(200);
-        menuDto.setPath("/tool");
-        menuDto.setRedirect(null);
-        menuDto.setName("tool");
-        menuDto.setHidden(false);
-
-        MenuMetaDto metaDto=new MenuMetaDto();
-        metaDto.setTitle("后端工具");
-        metaDto.setIcon("table");
-        metaDto.setPrivilege(null);
-        metaDto.setPid(-1);
-        metaDto.setSort(65);
-        menuDto.setMeta(metaDto);
-
+    private static List<MenuDto> findChilds(int id){
         List<MenuDto> childs=new ArrayList<>();
-        MenuDto childMenu001=new MenuDto();
-        childMenu001.setId(9);
-        childMenu001.setPath("/luceneMgr");
-        childMenu001.setName("luceneMgr");
-        childMenu001.setHidden(false);
-        MenuMetaDto childMeta001=new MenuMetaDto();
-        childMeta001.setTitle("Lucene更新");
-        childMeta001.setIcon("table");
-        childMeta001.setPrivilege(null);
-        childMeta001.setPid(200);
-        childMeta001.setSort(60);
-        childMenu001.setMeta(childMeta001);
-        childMenu001.setChildren(new ArrayList<>());
-        childMenu001.setSort(60);
-        childs.add(childMenu001);
+        for(RouterEnum routerEnum:RouterEnum.values()){
+            if(routerEnum.getPid()==id){
+                MenuDto  menuDto = new MenuDto();
 
-        menuDto.setChildren(childs);
-        menuDto.setSort(65);
-        return  menuDto;
+                menuDto.setId(routerEnum.getId());
+                menuDto.setPath("/"+routerEnum.getPath());
+                menuDto.setName(routerEnum.getPath());
+                menuDto.setHidden(routerEnum.isHidden());
+                MenuMetaDto menuMetaDto=new MenuMetaDto();
+                menuMetaDto.setTitle(routerEnum.getTitle());
+               // menuMetaDto.setIcon("table");
+                menuMetaDto.setPid(routerEnum.getPid());
+
+                menuDto.setMeta(menuMetaDto);
+                menuDto.setChildren(new ArrayList<>());
+                childs.add(menuDto);
+            }
+        }
+        return childs;
     }
+
+
 
 
     public String getPid() {

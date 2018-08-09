@@ -8,7 +8,7 @@ public class MenuMetaDto {
     private String icon;
     private String privilege;
     private Integer pid;
-    private int sort;
+    private int sort=50;
 
     public String getTitle() {
         return title;

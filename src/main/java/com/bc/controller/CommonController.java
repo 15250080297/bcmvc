@@ -4,6 +4,7 @@ package com.bc.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.bc.common.SystemCode;
 import com.bc.common.enums.ActionEnum;
+import com.bc.common.enums.RouterEnum;
 import com.bc.dto.InfoDto;
 import com.bc.dto.MenuDto;
 import com.bc.response.ResponseWithData;
@@ -25,6 +26,7 @@ public class CommonController  {
     private static Logger logger = Logger.getLogger(CommonController.class);
 
     private String URL="http://127.0.0.1:8080/2/tool";
+    //private String URL="http://182.92.3.98:8080/2/tool";
 
     @RequestMapping(value="/post",method = RequestMethod.POST)
     public ResponseWithData post(@RequestParam String action, @RequestParam String param){
@@ -76,12 +78,14 @@ public class CommonController  {
         info.setPrivileges(new ArrayList<>());
         info.setRealName("test name");
         List<String> routerList=new ArrayList<>();
-        routerList.add("plugins");
-        routerList.add("demolist");
-        routerList.add("lucenemgr");
+        for(RouterEnum routerEnum:RouterEnum.values()){
+            routerList.add(routerEnum.getPath());
+        }
         info.setRouterNames(routerList);
         info.setMenuList(MenuDto.menus());
-
+        for(MenuDto menuDto:info.getMenuList()){
+            logger.info(JSONObject.toJSONString(menuDto));
+        }
         return new ResponseWithData(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMessage(),info);
 
     }
