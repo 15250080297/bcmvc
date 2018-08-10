@@ -16,10 +16,11 @@ public enum RouterEnum {
      */
     TOOL(1000,-1,"tool","后端工具",false,"user"),
         TOOL_LUCENE(1001,1000,"luceneMgr","Lucene更新",false,""),
+        TOOL_DUTY(1002,1000,"dutyMgr","任务管理",false,""),
 
 
     /**
-     * 2000 + tool 后端工具
+     * 2000 + balance 任务管理
      */
     BALANCE(2000,-1,"balance","资产",false,"eye"),
          BALANCE_MGR(2001,2000,"balancelist","资产列表",false,""),
