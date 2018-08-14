@@ -1,32 +1,16 @@
 package com.bc.util;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.security.KeyStore;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.net.ssl.SSLContext;
-
-import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -53,8 +37,9 @@ public class HttpClientUtil {
 		try {
 			String js= params;
 			logger.info(" http request js : " + js);
-			StringEntity se = new StringEntity(js);
+			StringEntity se = new StringEntity(js,"utf-8");
 			se.setContentType("text/json");
+			se.setContentEncoding("utf-8");
 
 			httppost.setEntity(se);
 			CloseableHttpResponse response = httpclient.execute(httppost);
