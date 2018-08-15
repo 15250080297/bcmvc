@@ -17,6 +17,7 @@ public enum RouterEnum {
     TOOL(1000,-1,"tool","后端工具",false,"user"),
         TOOL_LUCENE(1001,1000,"luceneMgr","Lucene更新",false,""),
         TOOL_DUTY(1002,1000,"dutyMgr","任务管理",false,""),
+        RECONCILITION_FILES(1003,1000,"reconcilitionFilesMgr","对账文件管理",false,""),
 
 
     /**

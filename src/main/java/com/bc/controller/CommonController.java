@@ -25,13 +25,17 @@ import java.util.List;
 public class CommonController  {
     private static Logger logger = Logger.getLogger(CommonController.class);
 
-    private String URL="http://127.0.0.1:8080/2/tool";
-    //private String URL="http://182.92.3.98:8080/2/tool";
+    //private String URL="http://127.0.0.1:8080/2/tool";  //dev
+   // private String URL="http://182.92.3.98:8080/2/tool";  //qa
+   private String URL="https://api.beecloud.cn/2/tool";     //prod
+
+    /**
+     * 对账单
+     */
+    private String URL_BJ2="http://123.56.92.236:8080/2/tool";
 
     @RequestMapping(value="/post",method = RequestMethod.POST)
     public ResponseWithData post(@RequestParam String action, @RequestParam String param){
-        logger.info("post in"+action);
-        logger.info("post in"+param);
 
         ActionEnum actionEnum=null;
         try{
@@ -42,22 +46,7 @@ public class CommonController  {
         if(null!=actionEnum)
             return action(actionEnum,param);
 
-        JSONObject jsonObject=null;
-        try {
-           String src= HttpClientUtil.postWithParams(URL + action, param);
-           if(StringUtils.isNotBlank(src))
-               jsonObject=JSONObject.parseObject(src);
-        }catch (Exception e){
-        }
-        if(null==jsonObject||!jsonObject.containsKey("result_code")){
-            return new ResponseWithData(SystemCode.LINK_ERROR.getCode(), SystemCode.LINK_ERROR.getMessage());
-        }
-        int code=jsonObject.getInteger("result_code");
-        if(0==code){
-            return new ResponseWithData(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMessage(),jsonObject);
-        }else{
-            return new ResponseWithData(code, jsonObject.getString("err_detail"));
-        }
+        return postDone(URL,action,param);
     }
 
 
@@ -65,6 +54,10 @@ public class CommonController  {
         switch (actionEnum){
             case GET_LOGIN_AUTHINFO:
                 return getInfo();
+            case RECONCILITION_FILES:
+                return postDone(URL_BJ2,"/reconcilition/files",param);
+            case RECONCILITION_DELFILE:
+                return postDone(URL_BJ2,"/reconcilition/delfile",param);
             default:
                 return new ResponseWithData(SystemCode.CUSTOM_ERROR.getCode(),"暂不支持");
         }
@@ -87,6 +80,27 @@ public class CommonController  {
             logger.info(JSONObject.toJSONString(menuDto));
         }
         return new ResponseWithData(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMessage(),info);
+
+    }
+
+
+    public ResponseWithData postDone(String realUrl,String action,String param){
+        JSONObject jsonObject=null;
+        try {
+            String src= HttpClientUtil.postWithParams(realUrl + action, param);
+            if(StringUtils.isNotBlank(src))
+                jsonObject=JSONObject.parseObject(src);
+        }catch (Exception e){
+        }
+        if(null==jsonObject||!jsonObject.containsKey("result_code")){
+            return new ResponseWithData(SystemCode.LINK_ERROR.getCode(), SystemCode.LINK_ERROR.getMessage());
+        }
+        int code=jsonObject.getInteger("result_code");
+        if(0==code){
+            return new ResponseWithData(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMessage(),jsonObject);
+        }else{
+            return new ResponseWithData(code, jsonObject.getString("err_detail"));
+        }
 
     }
 }
