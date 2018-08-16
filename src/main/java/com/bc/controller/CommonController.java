@@ -33,6 +33,7 @@ public class CommonController  {
      * 对账单
      */
     private String URL_BJ2="http://123.56.92.236:8080/2/tool";
+    //private String URL_BJ2="http://127.0.0.1:8080/2/tool";  //dev
 
     @RequestMapping(value="/post",method = RequestMethod.POST)
     public ResponseWithData post(@RequestParam String action, @RequestParam String param){
@@ -58,6 +59,8 @@ public class CommonController  {
                 return postDone(URL_BJ2,"/reconcilition/files",param);
             case RECONCILITION_DELFILE:
                 return postDone(URL_BJ2,"/reconcilition/delfile",param);
+            case RECONCILITION_GENERATE:
+                return postDone(URL_BJ2,"/reconcilition/generate",param);
             default:
                 return new ResponseWithData(SystemCode.CUSTOM_ERROR.getCode(),"暂不支持");
         }
