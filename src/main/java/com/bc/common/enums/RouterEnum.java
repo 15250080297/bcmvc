@@ -26,6 +26,14 @@ public enum RouterEnum {
     BALANCE(2000,-1,"balance","资产",false,"eye"),
          BALANCE_MGR(2001,2000,"balancelist","资产列表",false,""),
 
+
+    /**
+     * 3000 + balance 任务管理
+     */
+    REPORT(3000,-1,"report","报表",false,"eye"),
+        SPAY_MGR(3001,3000,"spayMgr","交易统计",false,""),
+
+
     ;
 
     private String path;
