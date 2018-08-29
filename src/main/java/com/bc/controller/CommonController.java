@@ -26,8 +26,8 @@ public class CommonController  {
     private static Logger logger = Logger.getLogger(CommonController.class);
 
     //private String URL="http://127.0.0.1:8080/2/tool";  //dev
-    private String URL="http://182.92.3.98:8080/2/tool";  //qa
-   //private String URL="https://api.beecloud.cn/2/tool";     //prod
+   // private String URL="http://182.92.3.98:8080/2/tool";  //qa
+   private String URL="https://api.beecloud.cn/2/tool";     //prod
 
     /**
      * 对账单
