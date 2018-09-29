@@ -35,8 +35,19 @@ public class CommonController  {
     private String URL_BJ2="http://123.56.92.236:8080/2/tool";
     //private String URL_BJ2="http://127.0.0.1:8080/2/tool";  //dev
 
+
+    /**
+     * COINS API
+     */
+     private String COINS_URL="http://182.92.3.98:3587/tool";  //qa
+
+
     @RequestMapping(value="/post",method = RequestMethod.POST)
     public ResponseWithData post(@RequestParam String action, @RequestParam String param){
+        if(action.startsWith("/coins"))
+            return cpDone(COINS_URL,action.substring(6),param);
+
+
 
         ActionEnum actionEnum=null;
         try{
@@ -103,6 +114,27 @@ public class CommonController  {
             return new ResponseWithData(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMessage(),jsonObject);
         }else{
             return new ResponseWithData(code, jsonObject.getString("err_detail"));
+        }
+
+    }
+
+
+    public ResponseWithData cpDone(String realUrl,String action,String param){
+        JSONObject jsonObject=null;
+        try {
+            String src= HttpClientUtil.postWithParams(realUrl + action, param);
+            if(StringUtils.isNotBlank(src))
+                jsonObject=JSONObject.parseObject(src);
+        }catch (Exception e){
+        }
+        if(null==jsonObject||!jsonObject.containsKey("resultCode")){
+            return new ResponseWithData(SystemCode.LINK_ERROR.getCode(), SystemCode.LINK_ERROR.getMessage());
+        }
+        int code=jsonObject.getInteger("resultCode");
+        if(0==code){
+            return new ResponseWithData(SystemCode.SUCCESS.getCode(), SystemCode.SUCCESS.getMessage(),jsonObject);
+        }else{
+            return new ResponseWithData(code, jsonObject.getString("errorMsg"));
         }
 
     }

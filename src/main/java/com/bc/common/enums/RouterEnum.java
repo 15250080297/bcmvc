@@ -33,6 +33,15 @@ public enum RouterEnum {
     REPORT(3000,-1,"report","报表",false,"eye"),
         SPAY_MGR(3001,3000,"spayMgr","交易统计",false,""),
 
+    /**
+     * 4000 + 币管理
+     */
+    COINS(4000,-1,"coins","币管理",false,"eye"),
+    COINS_USERS(4001,4000,"cUserMgr","用户管理",false,""),
+    COINS_SUBUSERS(4002,4000,"csubUserMgr","子账户管理",false,""),
+    COINS_CHARGE_BILL(4003,4000,"cchargeBillMgr","充值管理",false,""),
+    COINS_TRANSFER_BILL(4004,4000,"ctransferMgr","打款管理",false,""),
+
 
     ;
 
